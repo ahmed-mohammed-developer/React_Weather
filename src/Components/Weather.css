@@ -30,3 +30,42 @@
     font-weight: bold;
     color: #fff;
 }
+.search-location {
+    position: relative;
+}
+.search-location input {
+    width: clamp(15rem, 14cqi, 25rem);
+    height: 4rem;
+    border: none;
+    background-color: transparent;
+    border-bottom: 0.1rem solid #aaa;
+    font-size: 1.5rem;
+    color: #ddd;
+    outline: none;
+}
+.search-location i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 1rem;
+    font-size: 2rem;
+    color: #fff;
+}
+.weather-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 2rem;
+}
+.weather-data i {
+    font-size: 5rem;
+}
+.box-weather i.bxs-sun{
+    color: #ffc87c;
+}
+.weather-type,
+.temp {
+    font-family: 'Comfortaa' sans-serif;
+    font-size: 2rem;
+    color: #ddd;
+}
