@@ -4,13 +4,6 @@ import './Weather.css'
 
 const Weather = () => {
   const [data, setData] = useState([])
-  /*
-Here the useState hook from React library is used to define a new state.
-variable location:
-This variable represents the current state, which is initially an empty string (“”).
-setLocation function:
-This function is used to update the location value.
-  */
   const [location, setLocation] = useState("")
 
   useEffect(() => {
@@ -42,9 +35,14 @@ This function is used to update the location value.
     }
   }
 
-  //Code used to update the state of a component in React based on user input, allowing the component to automatically re-render when the value changes
   const handleInutChange = (e) => {
     setLocation(e.target.value)
+  }
+
+  const handelKeyDown = (e) => {
+    if(e.key === "Enter") {
+      search()
+    }
   }
 
 
@@ -79,15 +77,17 @@ This function is used to update the location value.
           <div className="location">{data.name}</div>
         </div>
         <div className="search-location">
-          <input type="text" placeholder='Enter Location' value={location} onChange={handleInutChange}/>
+          <input type="text" placeholder='Enter Location' value={location} onChange={handleInutChange} onKeyDown={handelKeyDown}/>
           <i className='bx bx-search-alt-2' onClick={search}></i>
         </div>
       </div>
-      <div className="weather-data">
-        {data.weather && data.weather[0] && getWeatherIcon(data.weather[0].main)}
-      <div className="weather-type">{data.weather ? data.weather[0].main : null}</div>
-      <div className="temp">{data.main ? `${Math.floor(data.main.temp)}°` : null}</div>
-            </div>
+      {data.notFound ? (<div className='not-found'>Not Found 😥</div>) : (
+         <div className="weather-data">
+         {data.weather && data.weather[0] && getWeatherIcon(data.weather[0].main)}
+       <div className="weather-type">{data.weather ? data.weather[0].main : null}</div>
+       <div className="temp">{data.main ? `${Math.floor(data.main.temp)}°` : null}</div>
+       </div>
+      )}
     </div>
       </div>
     </div>
