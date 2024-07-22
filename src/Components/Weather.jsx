@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './Weather.css'
 
@@ -13,37 +13,59 @@ This function is used to update the location value.
   */
   const [location, setLocation] = useState("")
 
+  useEffect(() => {
+    const fetchDefaultLocation = async () => {
+      const defaultLocation = 'Riyadh'
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&units=Metric&appid=5dc31f1a51a862365906ddd9165235ee`
+      const response = await axios.get(url)
+      setData(response.data)
+    }
+    fetchDefaultLocation()
+  }, [])
+
   const search = async () => {
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=Metric&appid=5dc31f1a51a862365906ddd9165235ee`
-
-
-    
-    //A GET request is sent to the specified URL using the Axios library. The await keyword is used to wait for a request response before continuing.
-    /*
-    const response = 
-await axios.get(url):
-This line uses axios to send a GET request to the address specified in the url.
-await makes the code wait until a response is received from the server before continuing.
-
-setData(response.data):
-After the response is received, the received data (response.data) is set to a state called data using the setData function.
-
-setLocation(''):
-A state called location is assigned an empty value using the setLocation function.
-
-console.log(response):
-The complete response is printed in the console for the purposes of debugging or verifying the data received
-*/
-    const response = await axios.get(url)
-    //After getting the response, the data is updated using the setData function, which is supposed to update the state of the React component.
-    setData(response.data)
-    setLocation('')
-    console.log(response)
+    try {
+      const response = await axios.get(url)
+      if(response.data.cod !== 200) {
+        setData({notFound: true})
+      } else {
+        setData(response.data)
+        setLocation('')
+      } 
+    } catch (error) {
+      if(error.response && error.response.status === 404) {
+        setData({notFound: true})
+      } else {
+        console.error("An unexpected error occurred", error)
+      }
+    }
   }
 
   //Code used to update the state of a component in React based on user input, allowing the component to automatically re-render when the value changes
   const handleInutChange = (e) => {
     setLocation(e.target.value)
+  }
+
+
+  const getWeatherIcon = (weatherType) => {
+    switch(weatherType) {
+      case "Clear":
+        return <i className='bx bxs-sun'></i>
+      case "Clouds":
+        return <i className='bx bxs-cloud'></i>
+      case "Rain":
+        return <i className='bx bxs-cloud-rain'></i>
+      case "Thumderstorm":
+        return <i className='bx bxs-cloud-lightning'></i>
+      case "Snow":
+        return <i className='bx bx-cloud-snow'></i>
+      case "Haze":
+      case "Wist":
+        return  <i className='bx bxs-cloud'></i>
+      default:
+        return  <i className='bx bxs-cloud'></i>
+    }
   }
 
   return (
@@ -62,9 +84,9 @@ The complete response is printed in the console for the purposes of debugging or
         </div>
       </div>
       <div className="weather-data">
-      <i className='bx bxs-sun'></i>
+        {data.weather && data.weather[0] && getWeatherIcon(data.weather[0].main)}
       <div className="weather-type">{data.weather ? data.weather[0].main : null}</div>
-      <div className="temp">28°</div>
+      <div className="temp">{data.main ? `${Math.floor(data.main.temp)}°` : null}</div>
             </div>
     </div>
       </div>

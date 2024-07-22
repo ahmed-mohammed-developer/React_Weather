@@ -63,6 +63,18 @@
 .box-weather i.bxs-sun{
     color: #ffc87c;
 }
+.box-weather i.bxs-cloud{
+    color: #fff;
+}
+.box-weather i.bxs-cloud-rain{
+    color: #5fd1f9;
+}
+.box-weather i.bxs-cloud-lightning{
+    color: #154abd
+}
+.box-weather i.bxs-sun{
+    color: #ffc87c;
+}
 .weather-type,
 .temp {
     font-family: 'Comfortaa' sans-serif;
